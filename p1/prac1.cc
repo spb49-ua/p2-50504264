@@ -1,4 +1,4 @@
 // Programación 2 - Práctica 1
-// DNI:
-// Nombre:
+// DNI: 50504264
+// Nombre: Samuel Padilla Belvis
 
