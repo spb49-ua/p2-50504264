@@ -42,10 +42,20 @@ int rollDice(){
 }
 
 Hero createHero(){
+  Hero player;
+  bool name_error=false;
+  cout<<"Enter hero name: ";
+  cin>>player.name;
+  for(int i=0;i<KNAME;i++){
+  	if((player.name[i]=='?')||(player.name[i]=='!')/*||(player.name[i]=='¿')||(player.name[i]=='¡')*/||(player.name[i]=='.')||(player.name[i]==',')||(player.name[i]=='(')||(player.name[i]==')')){
+  		cout<<"xd"<<endl;
+  		name_error=true;}
+  }
+  return player;
 }
 
-Enemy createEnemy(){
-}
+//Enemy createEnemy(){
+//}
 
 void fight(Hero &hero,Enemy &enemy){
 }
@@ -64,6 +74,7 @@ void showMenu(){
 }
 
 int main(int argc,char *argv[]){
+  createHero();
   if(argc!=2){ // Si los parámetros no son correctos, el programa termina inmediatamente
     cout << "Usage: " << argv[0] << " <seed>" << endl;
   }
