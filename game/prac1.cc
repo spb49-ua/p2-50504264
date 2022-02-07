@@ -73,11 +73,11 @@ Hero attack_defense(){
   error=false;
   cout<<"Enter attack/defense:\t";
   cin>>n1>>c>>n2;
-  if(n1<1){
+  if(n1<=0){
     cout<<"ERROR: wrong distribution"<<endl;
     error=true;
    }
-  if(n2<10){
+  if(n2<=0){
     cout<<"ERROR: wrong distribution"<<endl;
     error=true;
     }
