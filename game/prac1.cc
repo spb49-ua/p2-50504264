@@ -1,5 +1,6 @@
 // 50504264J Samuel Padilla Belvis
 #include <iostream>
+#include <cstring>
 #include <cstdlib> // Para rand(), srand() y atoi()
 
 using namespace std;
@@ -41,21 +42,57 @@ int rollDice(){
   return rand()%KDICE+1;
 }
 
-Hero createHero(){
+Hero nombreHero(){
   Hero player;
-  bool name_error=false;
-  cout<<"Enter hero name: ";
-  cin>>player.name;
-  for(int i=0;i<KNAME;i++){
-  	if((player.name[i]=='?')||(player.name[i]=='!')/*||(player.name[i]=='¿')||(player.name[i]=='¡')*/||(player.name[i]=='.')||(player.name[i]==',')||(player.name[i]=='(')||(player.name[i]==')')){
-  		cout<<"xd"<<endl;
-  		name_error=true;}
+  int n;
+  bool name_error;
+  do{
+  name_error=false;
+  cout<<"Enter hero name:\t";
+  cin.getline(player.name,KNAME-1);
+  n=strlen(player.name);
+  if(isalpha(player.name[0])==0)
+  	name_error=true;
+  for(int i=0;i<n;i++){
+  	if((isalnum(player.name[i])==0)&&(player.name[i]!=' ')){
+  		name_error=true;
+  	}
   }
+  if(name_error)
+  	cout<<"ERROR: wrong name"<<endl;
+  }while(name_error);
   return player;
 }
 
-//Enemy createEnemy(){
-//}
+Hero attack_defense(){
+  Hero player;
+  bool error;
+  int n1,n2;
+  char c;
+  do{
+  error=false;
+  cout<<"Enter attack/defense:\t";
+  cin>>n1>>c>>n2;
+  if((n1+n2)!=100){
+    cout<<"ERROR: wrong distribution"<<endl;
+    error=true;
+   }
+  }while(error);
+  player.features.attack=n1*KPOINTS/100;
+  player.features.defense=n2*KPOINTS/100;
+  player.features.hp=n2*player.features.defense;
+  return player;
+}
+
+Hero createHero(){
+  Hero player;
+  player=nombreHero();
+  player=attack_defense();
+  return player;
+}
+
+/*Enemy createEnemy(){
+}*/
 
 void fight(Hero &hero,Enemy &enemy){
 }
