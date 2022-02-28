@@ -82,7 +82,7 @@ void showMainMenu() {
   cout << "[Options]" << endl
        << "1- Show catalog" << endl
        << "2- Show extended catalog" << endl
-       << "3- Add book" << endl
+       << "3- Add book" << endl	
        << "4- Delete book" << endl
        << "5- Import/export" << endl
        << "q- Quit" << endl
@@ -91,14 +91,24 @@ void showMainMenu() {
 
 void showCatalog(const BookStore &bookStore) {
   
-  bookStore.books.push_back(12);
   
+  
+  for(unsigned i=0;i<KMAXSTRING;i++){
+    cout<<i+1<<". "<<bookStore.books[i].id<<endl;
+  }
 }
 
 void showExtendedCatalog(const BookStore &bookStore) {
 }
 
 void addBook(BookStore &bookStore) {
+
+  for(unsigned i=0;i<KMAXSTRING;i++){
+    Book a;
+    
+    a.id=i*i;
+    bookStore.books.push_back(a);
+   }
 }
 
 void deleteBook(BookStore &bookStore) {
