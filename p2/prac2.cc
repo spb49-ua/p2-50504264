@@ -90,6 +90,9 @@ void showMainMenu() {
 }
 
 void showCatalog(const BookStore &bookStore) {
+  
+  bookStore.books.push_back(12);
+  
 }
 
 void showExtendedCatalog(const BookStore &bookStore) {
@@ -152,3 +155,19 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
