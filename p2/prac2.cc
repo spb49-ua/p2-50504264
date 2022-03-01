@@ -78,6 +78,14 @@ void error(Error e) {
   }
 }
 
+bool errorName(string palabra){
+  for(unsigned i=0;i<palabra.size();i++){
+    if ( palabra[i]!='-' && palabra[i]!=':' && palabra[i]!=' ' && palabra[i]!=',' && isalnum(palabra[i])==0 )
+    	return true;
+  }
+  return false;
+}
+
 void showMainMenu() {
   cout << "[Options]" << endl
        << "1- Show catalog" << endl
@@ -90,25 +98,39 @@ void showMainMenu() {
 }
 
 void showCatalog(const BookStore &bookStore) {
-  
-  
-  
-  for(unsigned i=0;i<KMAXSTRING;i++){
-    cout<<i+1<<". "<<bookStore.books[i].id<<endl;
-  }
+
 }
 
 void showExtendedCatalog(const BookStore &bookStore) {
 }
 
 void addBook(BookStore &bookStore) {
-
-  for(unsigned i=0;i<KMAXSTRING;i++){
-    Book a;
+  string palabra;
+  int n;
+  cin>>palabra;
+  do{
+    cout<<"Enter book title: ";
+    if(errorName(palabra))
+      error(ERR_BOOK_TITLE);
+  }while(errorName(palabra));
+  
+  do{
+    cout<<"Enter author(s): ";
+    if(errorName(palabra))
+      error(ERR_BOOK_AUTHORS);
+  }while(errorName(palabra));
+  
+  do{
     
-    a.id=i*i;
-    bookStore.books.push_back(a);
-   }
+    cout<<"Enter publication year: ";
+    cin>>n;
+    if (n<1440||n>2020)
+      error(ERR_BOOK_DATE);
+  }while(n<1440||n>2020);
+  
+  cout<<"Enter price: ";
+  cin>>n;
+  
 }
 
 void deleteBook(BookStore &bookStore) {
