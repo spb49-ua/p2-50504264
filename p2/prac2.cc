@@ -105,32 +105,42 @@ void showExtendedCatalog(const BookStore &bookStore) {
 }
 
 void addBook(BookStore &bookStore) {
-  string palabra;
-  int n;
-  cin>>palabra;
+  string titulo,author;
+  string yearS,priceS;
+  int year;
+  float price;
   do{
     cout<<"Enter book title: ";
-    if(errorName(palabra))
+    cin>>titulo;
+    if(errorName(titulo))
       error(ERR_BOOK_TITLE);
-  }while(errorName(palabra));
+  }while(errorName(titulo));
   
   do{
     cout<<"Enter author(s): ";
-    if(errorName(palabra))
+    cin>>author;
+    if(errorName(author))
       error(ERR_BOOK_AUTHORS);
-  }while(errorName(palabra));
+  }while(errorName(author));
   
   do{
     
     cout<<"Enter publication year: ";
-    cin>>n;
-    if (n<1440||n>2020)
+    getline(cin,yearS);
+    year=stoi(yearS);
+    
+    if (yearS==" " || year<1440 || year>2020)
       error(ERR_BOOK_DATE);
-  }while(n<1440||n>2020);
+  }while(yearS==" " || year<1440 || year>2020);
   
-  cout<<"Enter price: ";
-  cin>>n;
-  
+  do{
+    cout<<"Enter price: ";
+    getline(cin,priceS);
+    price=stof(priceS);
+    
+    if (priceS==" " || price<0)
+      error(ERR_BOOK_PRICE);
+  }while(priceS==" " || price<0);
 }
 
 void deleteBook(BookStore &bookStore) {
