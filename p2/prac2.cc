@@ -102,14 +102,17 @@ string generarSlug(string titulo){
     }
     if(isalpha(titulo[i])!=0)
       titulo[i]=tolower(titulo[i]);
-    else if(isalnum(titulo[i])==0)
+    else if(isalnum(titulo[i])==0){
       titulo[i]='-';
-    
-    if(titulo[i-1]=='-' && titulo[i]=='-'){
-      for(unsigned k=i-1;k<titulo.size();k++){
-        titulo[k-1]=titulo[k];
-        titulo[k]=' ';
       }
+  }
+  
+  for(unsigned h=0;h<titulo.size();h++){
+    if(titulo[h]=='-' && titulo[h+1]=='-'){
+      for(unsigned b=h;b<titulo.size();b++){
+        titulo[b]=titulo[b+1];
+      }
+      h--;
     }
   }
   
@@ -123,6 +126,10 @@ string generarSlug(string titulo){
   slug=titulo;
   cout<<slug<<endl;
   return slug;
+}
+
+void anadirLibro(Book libro){
+  
 }
 
 void showMainMenu() {
@@ -144,23 +151,23 @@ void showExtendedCatalog(const BookStore &bookStore) {
 }
 
 void addBook(BookStore &bookStore) {
-  string titulo,author,slug;
+  Book libro;
+  libro.id=bookStore.nextId;
+  bookStore.nextId--;
   string yearS,priceS;
-  int year;
-  float price;
   do{
     cout<<"Enter book title: ";
-    getline(cin,titulo);
-    if(errorName(titulo))
+    getline(cin,libro.title);
+    if(errorName(libro.title))
       error(ERR_BOOK_TITLE);
-  }while(errorName(titulo));
+  }while(errorName(libro.title));
   
   do{
     cout<<"Enter author(s): ";
-    getline(cin,author);
-    if(errorName(author))
+    getline(cin,libro.authors);
+    if(errorName(libro.authors))
       error(ERR_BOOK_AUTHORS);
-  }while(errorName(author));
+  }while(errorName(libro.authors));
   
   do{
     
@@ -168,23 +175,25 @@ void addBook(BookStore &bookStore) {
     getline(cin,yearS);
     
     if(yearS.size()!=0)
-      year=stoi(yearS);
-    if (yearS.size()==0 || year<1440 || year>2022)
+      libro.year=stoi(yearS);
+    if (yearS.size()==0 || libro.year<1440 || libro.year>2022)
       error(ERR_BOOK_DATE);
-  }while(yearS.size()==0 || year<1440 || year>2022);
+  }while(yearS.size()==0 || libro.year<1440 || libro.year>2022);
   
   do{
     cout<<"Enter price: ";
     getline(cin,priceS);
     
     if(priceS.size()!=0)
-      price=stof(priceS);
+      libro.price=stof(priceS);
       
-    if (priceS.size()==0 || price<0)
+    if (priceS.size()==0 || libro.price<0)
       error(ERR_BOOK_PRICE);
-  }while(priceS.size()==0 || price<0);
+  }while(priceS.size()==0 || libro.price<0);
   
-  slug=generarSlug(titulo);
+  libro.slug=generarSlug(libro.title);
+  
+  anadirLibro(libro);
 }
 
 void deleteBook(BookStore &bookStore) {
