@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -79,11 +80,49 @@ void error(Error e) {
 }
 
 bool errorName(string palabra){
+  if(palabra.size()==0)
+  	return true;
   for(unsigned i=0;i<palabra.size();i++){
     if ( palabra[i]!='-' && palabra[i]!=':' && palabra[i]!=' ' && palabra[i]!=',' && isalnum(palabra[i])==0 )
     	return true;
   }
+  
   return false;
+}
+
+string generarSlug(string titulo){
+  string slug;
+  
+  for(unsigned i=0;i<titulo.size();i++){
+    if(titulo[0]=='-'){
+      for(unsigned j=0;j<titulo.size();j++){
+        titulo[j]=titulo[j+1];
+        titulo[j+1]=' ';
+      }
+    }
+    if(isalpha(titulo[i])!=0)
+      titulo[i]=tolower(titulo[i]);
+    else if(isalnum(titulo[i])==0)
+      titulo[i]='-';
+    
+    if(titulo[i-1]=='-' && titulo[i]=='-'){
+      for(unsigned k=i-1;k<titulo.size();k++){
+        titulo[k-1]=titulo[k];
+        titulo[k]=' ';
+      }
+    }
+  }
+  
+  for(unsigned l=titulo.size();l>=0;l--){
+    if(isalnum(titulo[l])!=0)
+      break;
+    else if(titulo[l]=='-')
+       titulo[l]=' ';
+  }
+  
+  slug=titulo;
+  cout<<slug<<endl;
+  return slug;
 }
 
 void showMainMenu() {
@@ -105,20 +144,20 @@ void showExtendedCatalog(const BookStore &bookStore) {
 }
 
 void addBook(BookStore &bookStore) {
-  string titulo,author;
+  string titulo,author,slug;
   string yearS,priceS;
   int year;
   float price;
   do{
     cout<<"Enter book title: ";
-    cin>>titulo;
+    getline(cin,titulo);
     if(errorName(titulo))
       error(ERR_BOOK_TITLE);
   }while(errorName(titulo));
   
   do{
     cout<<"Enter author(s): ";
-    cin>>author;
+    getline(cin,author);
     if(errorName(author))
       error(ERR_BOOK_AUTHORS);
   }while(errorName(author));
@@ -127,20 +166,25 @@ void addBook(BookStore &bookStore) {
     
     cout<<"Enter publication year: ";
     getline(cin,yearS);
-    year=stoi(yearS);
     
-    if (yearS==" " || year<1440 || year>2020)
+    if(yearS.size()!=0)
+      year=stoi(yearS);
+    if (yearS.size()==0 || year<1440 || year>2022)
       error(ERR_BOOK_DATE);
-  }while(yearS==" " || year<1440 || year>2020);
+  }while(yearS.size()==0 || year<1440 || year>2022);
   
   do{
     cout<<"Enter price: ";
     getline(cin,priceS);
-    price=stof(priceS);
     
-    if (priceS==" " || price<0)
+    if(priceS.size()!=0)
+      price=stof(priceS);
+      
+    if (priceS.size()==0 || price<0)
       error(ERR_BOOK_PRICE);
-  }while(priceS==" " || price<0);
+  }while(priceS.size()==0 || price<0);
+  
+  slug=generarSlug(titulo);
 }
 
 void deleteBook(BookStore &bookStore) {
