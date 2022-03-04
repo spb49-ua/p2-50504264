@@ -124,13 +124,9 @@ string generarSlug(string titulo){
   }
   
   slug=titulo;
-  cout<<slug<<endl;
   return slug;
 }
 
-void anadirLibro(Book libro){
-  
-}
 
 void showMainMenu() {
   cout << "[Options]" << endl
@@ -144,16 +140,19 @@ void showMainMenu() {
 }
 
 void showCatalog(const BookStore &bookStore) {
-
+  for(unsigned i=0;i<bookStore.nextId-1;i++)
+    cout<<bookStore.books[i].id<<". "<<bookStore.books[i].title<<" ("<<bookStore.books[i].year<<"), "<<bookStore.books[i].price<<endl;
 }
 
 void showExtendedCatalog(const BookStore &bookStore) {
+  for(unsigned i=0;i<bookStore.nextId-1;i++)
+    cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"'<<bookStore.books[i].slug<<'"'<<','<<bookStore.books[i].price<<endl;
 }
 
 void addBook(BookStore &bookStore) {
   Book libro;
   libro.id=bookStore.nextId;
-  bookStore.nextId--;
+  bookStore.nextId++;
   string yearS,priceS;
   do{
     cout<<"Enter book title: ";
@@ -193,7 +192,7 @@ void addBook(BookStore &bookStore) {
   
   libro.slug=generarSlug(libro.title);
   
-  anadirLibro(libro);
+  bookStore.books.push_back(libro);
 }
 
 void deleteBook(BookStore &bookStore) {
