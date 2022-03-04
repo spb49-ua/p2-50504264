@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
+#include <cstring>
 
 using namespace std;
 
@@ -116,14 +117,20 @@ string generarSlug(string titulo){
     }
   }
   
-  for(unsigned l=titulo.size();l>=0;l--){
+  for(int l=titulo.size();l>=0;l--){
     if(isalnum(titulo[l])!=0)
       break;
     else if(titulo[l]=='-')
        titulo[l]=' ';
   }
   
-  slug=titulo;
+  for(unsigned c=0;c<titulo.size();c++){
+    if(titulo[c]==' ')
+      break;
+    else
+      slug[c]=titulo[c];
+  }
+  
   return slug;
 }
 
