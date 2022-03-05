@@ -206,6 +206,13 @@ void deleteBook(BookStore &bookStore) {
 }
 
 void importExportMenu(BookStore &bookStore) {
+  cout << "[Import/export options]" << endl
+       << "1- Import from CSV" << endl
+       << "2- Export to CSV" << endl
+       << "3- Load data" << endl	
+       << "4- Save data" << endl
+       << "b- back to main meni" << endl
+       << "Option: ";
 }
 
 void importFromCsv(BookStore &bookStore){
