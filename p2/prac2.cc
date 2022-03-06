@@ -124,14 +124,12 @@ string generarSlug(string titulo){
        titulo[l]=' ';
   }
   
-  for(unsigned c=0;c<titulo.size();c++){
+  /*for(unsigned c=0;c<titulo.size();c++){
     if(titulo[c]==' ')
-      break;
-    else
-      slug[c]=titulo[c];
-  }
+      titulo.erase(c);
+  }*/
   
-  return slug;
+  return titulo;
 }
 
 
@@ -147,13 +145,17 @@ void showMainMenu() {
 }
 
 void showCatalog(const BookStore &bookStore) {
-  for(unsigned i=0;i<bookStore.nextId-1;i++)
-    cout<<bookStore.books[i].id<<". "<<bookStore.books[i].title<<" ("<<bookStore.books[i].year<<"), "<<bookStore.books[i].price<<endl;
+  for(unsigned i=0;i<bookStore.nextId-1;i++){
+    if(bookStore.books[i].year!=0)
+      cout<<bookStore.books[i].id<<". "<<bookStore.books[i].title<<" ("<<bookStore.books[i].year<<"), "<<bookStore.books[i].price<<endl;
+  }
 }
 
 void showExtendedCatalog(const BookStore &bookStore) {
-  for(unsigned i=0;i<bookStore.nextId-1;i++)
-    cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"'<<bookStore.books[i].slug<<'"'<<','<<bookStore.books[i].price<<endl;
+  for(unsigned i=0;i<bookStore.nextId-1;i++){
+    if(bookStore.books[i].year!=0)
+      cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"'<<bookStore.books[i].slug<<'"'<<','<<bookStore.books[i].price<<endl;
+  }
 }
 
 void addBook(BookStore &bookStore) {
@@ -189,7 +191,6 @@ void addBook(BookStore &bookStore) {
   do{
     cout<<"Enter price: ";
     getline(cin,priceS);
-    
     if(priceS.size()!=0)
       libro.price=stof(priceS);
       
@@ -203,6 +204,28 @@ void addBook(BookStore &bookStore) {
 }
 
 void deleteBook(BookStore &bookStore) {
+  bool erasedBook=false;
+  unsigned int id;
+  string idS;
+  cout<<"Enter book id: ";
+  getline(cin,idS);
+  if(idS.size()==0)
+    error(ERR_ID);
+  else{
+    id=stoi(idS);
+    for(unsigned i=0;i<bookStore.nextId-1;i++){
+      if(id==bookStore.books[i].id && bookStore.books[i].year!=0){
+        erasedBook=true;
+        bookStore.books[i].title="";
+        bookStore.books[i].authors="";
+        bookStore.books[i].year=0;
+        bookStore.books[i].slug="";
+        bookStore.books[i].price=0;
+      }
+    }
+    if(!erasedBook)
+      error(ERR_ID);
+  }
 }
 
 void importExportMenu(BookStore &bookStore) {
