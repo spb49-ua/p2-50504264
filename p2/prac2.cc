@@ -22,6 +22,14 @@ enum Error {
   ERR_ARGS
 };
 
+enum Pedir {
+  TITLE,
+  AUTHORS,
+  DATE,
+  PRICE,
+  ID
+};
+
 struct Book {
   unsigned int id;
   string title;
@@ -76,6 +84,26 @@ void error(Error e) {
       break;
     case ERR_ARGS:
       cout << "ERROR: wrong arguments" << endl;
+      break;
+  }
+}
+
+void pedir(Pedir p) {
+  switch (p) {
+    case TITLE:
+      cout << "Enter book title: ";
+      break;
+    case AUTHORS:
+      cout << "Enter author(s): ";
+      break;
+    case DATE:
+      cout<<"Enter publication year: ";
+      break;
+    case PRICE:
+      cout<<"Enter price: ";
+      break;
+    case ID:
+      cout<<"Enter book id: ";
       break;
   }
 }
@@ -171,14 +199,14 @@ void addBook(BookStore &bookStore) {
   bookStore.nextId++;
   string yearS,priceS;
   do{
-    cout<<"Enter book title: ";
+    pedir(TITLE);
     getline(cin,libro.title);
     if(errorName(libro.title))
       error(ERR_BOOK_TITLE);
   }while(errorName(libro.title));
   
   do{
-    cout<<"Enter author(s): ";
+    pedir(AUTHORS);
     getline(cin,libro.authors);
     if(errorName(libro.authors))
       error(ERR_BOOK_AUTHORS);
@@ -186,7 +214,7 @@ void addBook(BookStore &bookStore) {
   
   do{
     
-    cout<<"Enter publication year: ";
+    pedir(DATE);
     getline(cin,yearS);
     
     if(yearS.size()!=0)
@@ -196,7 +224,7 @@ void addBook(BookStore &bookStore) {
   }while(yearS.size()==0 || libro.year<1440 || libro.year>2022);
   
   do{
-    cout<<"Enter price: ";
+    pedir(PRICE);
     getline(cin,priceS);
     if(priceS.size()!=0)
       libro.price=stof(priceS);
@@ -214,7 +242,7 @@ void deleteBook(BookStore &bookStore) {
   bool erasedBook=false;
   unsigned int id;
   string idS;
-  cout<<"Enter book id: ";
+  pedir(ID);
   getline(cin,idS);
   if(idS.size()==0)
     error(ERR_ID);
@@ -282,7 +310,29 @@ int main(int argc, char *argv[]) {
         deleteBook(bookStore);
         break;
       case '5':
-        importExportMenu(bookStore);
+        do{
+          importExportMenu(bookStore);
+          cin>>option;
+          cin.get();
+          switch (option) {
+            case '1':
+              importFromCsv(bookStore);
+              break;
+            case '2':
+              exportToCsv(bookStore);
+              break;
+            case '3':
+              loadData(bookStore);
+              break;
+            case '4':
+              saveData(bookStore);
+              break;
+            case 'b':
+              break;
+            default:
+              error(ERR_OPTION);
+          }
+        }while(option != 'b');
         break;
       case 'q':
         break;
