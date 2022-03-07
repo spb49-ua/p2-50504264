@@ -92,7 +92,6 @@ bool errorName(string palabra){
 }
 
 string generarSlug(string titulo){
-  string slug;
   
   for(unsigned i=0;i<titulo.size();i++){
     if(titulo[0]=='-'){
@@ -123,12 +122,14 @@ string generarSlug(string titulo){
     else if(titulo[l]=='-')
        titulo[l]=' ';
   }
-  
-  /*for(unsigned c=0;c<titulo.size();c++){
-    if(titulo[c]==' ')
-      titulo.erase(c);
-  }*/
-  
+  /*string slug;
+  for(unsigned c=0;c<titulo.size();c++){
+    if(isalpha(titulo[c])!=0 || isalnum(titulo[c])!=0 || titulo[c]=='-')
+      slug[c]=titulo[c];
+    cout<<titulo[c];
+  }
+  //strcpy(titulo,slug);
+  cout<<slug<<endl;*/
   return titulo;
 }
 
@@ -153,8 +154,14 @@ void showCatalog(const BookStore &bookStore) {
 
 void showExtendedCatalog(const BookStore &bookStore) {
   for(unsigned i=0;i<bookStore.nextId-1;i++){
-    if(bookStore.books[i].year!=0)
-      cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"'<<bookStore.books[i].slug<<'"'<<','<<bookStore.books[i].price<<endl;
+    if(bookStore.books[i].year!=0){
+      cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"';
+      for(unsigned j=0;j<bookStore.books[i].slug.length();j++){
+        if(isalnum(bookStore.books[i].slug[j])!=0)
+          cout<<bookStore.books[i].slug[j];
+      }
+      cout<<'"'<<','<<bookStore.books[i].price<<endl;
+    }
   }
 }
 
@@ -234,7 +241,7 @@ void importExportMenu(BookStore &bookStore) {
        << "2- Export to CSV" << endl
        << "3- Load data" << endl	
        << "4- Save data" << endl
-       << "b- back to main meni" << endl
+       << "b- Back to main menu" << endl
        << "Option: ";
 }
 
