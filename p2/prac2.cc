@@ -28,7 +28,8 @@ enum Pedir {
   AUTHORS,
   DATE,
   PRICE,
-  ID
+  ID,
+  FILENAME
 };
 
 struct Book {
@@ -106,6 +107,9 @@ void pedir(Pedir p) {
     case ID:
       cout<<"Enter book id: ";
       break;
+    case FILENAME:
+      cout<<"Enter filename: ";
+      break;
   }
 }
 
@@ -121,7 +125,7 @@ bool errorName(string palabra){
 }
 
 string generarSlug(string titulo){
-  
+  string slug="";
   for(unsigned i=0;i<titulo.size();i++){
     if(titulo[0]=='-'){
       for(unsigned j=0;j<titulo.size();j++){
@@ -136,32 +140,31 @@ string generarSlug(string titulo){
       }
   }
   
-  for(unsigned h=0;h<titulo.size();h++){
-    if(titulo[h]=='-' && titulo[h+1]=='-'){
-      for(unsigned b=h;b<titulo.size();b++){
-        titulo[b]=titulo[b+1];
+  for(unsigned k=0;k<titulo.size();k++){
+    if(titulo[k]=='-' && titulo[k+1]=='-'){
+      for(unsigned l=k;l<titulo.size();l++){
+        titulo[l]=titulo[l+1];
       }
-      h--;
+      k--;
     }
   }
   
-  for(int l=titulo.size();l>=0;l--){
-    if(isalnum(titulo[l])!=0)
+  for(int m=titulo.size();m>=0;m--){
+    if(isalnum(titulo[m])!=0)
       break;
-    else if(titulo[l]=='-')
-       titulo[l]=' ';
+    else if(titulo[m]=='-')
+       titulo[m]=' ';
   }
-  /*string slug;
-  for(unsigned c=0;c<titulo.size();c++){
-    if(isalpha(titulo[c])!=0 || isalnum(titulo[c])!=0 || titulo[c]=='-')
-      slug[c]=titulo[c];
-    cout<<titulo[c];
+  for(unsigned n=0;n<titulo.size();n++){
+    if(isalnum(titulo[n])!=0 || titulo[n]=='-')
+      slug+=titulo[n];
   }
-  //strcpy(titulo,slug);
-  cout<<slug<<endl;*/
-  return titulo;
+  return slug;
 }
 
+int tamanoFichero(string filename){
+  return 2;
+}
 
 void showMainMenu() {
   cout << "[Options]" << endl
@@ -184,12 +187,7 @@ void showCatalog(const BookStore &bookStore) {
 void showExtendedCatalog(const BookStore &bookStore) {
   for(unsigned i=0;i<bookStore.nextId-1;i++){
     if(bookStore.books[i].year!=0){
-      cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"';
-      for(unsigned j=0;j<bookStore.books[i].slug.length();j++){
-        if(isalnum(bookStore.books[i].slug[j])!=0)
-          cout<<bookStore.books[i].slug[j];
-      }
-      cout<<'"'<<','<<bookStore.books[i].price<<endl;
+      cout<<'"'<<bookStore.books[i].title<<'"'<<','<<'"'<<bookStore.books[i].authors<<'"'<<','<<bookStore.books[i].year<<','<<'"'<<bookStore.books[i].slug<<'"'<<','<<bookStore.books[i].price<<endl;
     }
   }
 }
@@ -275,6 +273,56 @@ void importExportMenu(BookStore &bookStore) {
 }
 
 void importFromCsv(BookStore &bookStore){
+  string filename,linea;
+  string nombre="",autor="",ano="",slug="",precio="";
+  unsigned int tam;
+  pedir(FILENAME);
+  getline(cin,filename);
+  ifstream fichero;
+  fichero.open(filename);
+  if(!fichero.is_open())
+    error(ERR_FILE);
+  else{
+    tam=tamanoFichero(filename);
+    for(unsigned j=0;j<tam;j++){
+      getline(fichero,linea);
+      int comillas=0;
+      for(unsigned k=0;k<linea.length();k++){       
+        if(linea[k]=='"')
+          comillas++;
+        switch(comillas){
+          case 1:
+            if(linea[k]!='"')
+              nombre+=linea[k];
+            break;
+          case 3:
+            if(linea[k]!='"')
+              autor+=linea[k];
+            break;
+          case 4:
+            if(linea[k]!=',' && linea[k]!='"')
+              ano+=linea[k];
+            break;
+          case 5:
+            if(linea[k]!='"')
+              slug+=linea[k];
+            break;
+          case 6:
+            if(linea[k]!=','  && linea[k]!='"')
+              precio+=linea[k];
+            break;
+        }  
+      }
+    
+      cout<<j+1<<". "<<nombre<<", "<<autor<<", "<<ano<<", "<<slug<<", "<<precio<<endl;
+      nombre="";
+      autor="";
+      ano="";
+      slug="";
+      precio="";
+    }
+    fichero.close();
+  }
 }
 
 void exportToCsv(const BookStore &bookStore){
