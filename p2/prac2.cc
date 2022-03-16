@@ -273,6 +273,7 @@ void importExportMenu(BookStore &bookStore) {
 }
 
 void importFromCsv(BookStore &bookStore){
+  bool nombreValido,autorValido,anoValido,precioValido;
   string filename,linea;
   string nombre="",autor="",ano="",slug="",precio="";
   unsigned int tam;
@@ -315,6 +316,11 @@ void importFromCsv(BookStore &bookStore){
       }
     
       cout<<j+1<<". "<<nombre<<", "<<autor<<", "<<ano<<", "<<slug<<", "<<precio<<endl;
+      cout<<"nombre: "<<nombreValido<<endl
+          <<"autor: "<<autorValido<<endl
+          <<"ano: "<<anoValido<<endl
+          <<"slug: "<<true<<endl
+          <<"precio: "<<precioValido<<endl;
       nombre="";
       autor="";
       ano="";
