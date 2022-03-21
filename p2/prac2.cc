@@ -124,6 +124,12 @@ bool errorName(string palabra){
   return false;
 }
 
+bool errorDate(string yearS,int year){
+  if(yearS.size()==0 || year<1440 || year>2022)
+    return true;
+  else 
+    return false;
+}
 
 string generarSlug(string titulo){
   string slug;
@@ -142,7 +148,15 @@ string generarSlug(string titulo){
 }
 
 int tamanoFichero(string filename){
-  return 2;
+  string aux;
+  int tamano=0;
+  ifstream fichero(filename);
+  while(!fichero.eof()){
+    getline(fichero,aux);
+    tamano++;
+  }
+  fichero.close();
+  return tamano-1;
 }
 
 void showMainMenu() {
@@ -197,9 +211,9 @@ void addBook(BookStore &bookStore) {
     
     if(yearS.size()!=0)
       libro.year=stoi(yearS);
-    if (yearS.size()==0 || libro.year<1440 || libro.year>2022)
+    if (errorDate(yearS,libro.year))
       error(ERR_BOOK_DATE);
-  }while(yearS.size()==0 || libro.year<1440 || libro.year>2022);
+  }while(errorDate(yearS,libro.year));
   
   do{
     pedir(PRICE);
@@ -252,10 +266,12 @@ void importExportMenu(BookStore &bookStore) {
 }
 
 void importFromCsv(BookStore &bookStore){
+  Book book;
   bool nombreValido,autorValido,anoValido,precioValido;
   string filename,linea;
-  string nombre="",autor="",ano="",slug="",precio="";
   unsigned int tam;
+  string ano,precio;
+  book.title="",book.authors="",book.year=0,book.slug="",book.price=0;
   pedir(FILENAME);
   getline(cin,filename);
   ifstream fichero;
@@ -263,7 +279,9 @@ void importFromCsv(BookStore &bookStore){
   if(!fichero.is_open())
     error(ERR_FILE);
   else{
+    fichero.close();
     tam=tamanoFichero(filename);
+    ifstream fichero(filename);
     for(unsigned j=0;j<tam;j++){
       getline(fichero,linea);
       int comillas=0;
@@ -273,11 +291,11 @@ void importFromCsv(BookStore &bookStore){
         switch(comillas){
           case 1:
             if(linea[k]!='"')
-              nombre+=linea[k];
+              book.title+=linea[k];
             break;
           case 3:
             if(linea[k]!='"')
-              autor+=linea[k];
+              book.authors+=linea[k];
             break;
           case 4:
             if(linea[k]!=',' && linea[k]!='"')
@@ -285,7 +303,7 @@ void importFromCsv(BookStore &bookStore){
             break;
           case 5:
             if(linea[k]!='"')
-              slug+=linea[k];
+              book.slug+=linea[k];
             break;
           case 6:
             if(linea[k]!=','  && linea[k]!='"')
@@ -293,17 +311,31 @@ void importFromCsv(BookStore &bookStore){
             break;
         }  
       }
-    
-      cout<<j+1<<". "<<nombre<<", "<<autor<<", "<<ano<<", "<<slug<<", "<<precio<<endl;
-      cout<<"nombre: "<<nombreValido<<endl
-          <<"autor: "<<autorValido<<endl
-          <<"ano: "<<anoValido<<endl
-          <<"slug: "<<true<<endl
-          <<"precio: "<<precioValido<<endl;
-      nombre="";
-      autor="";
+      book.id=bookStore.nextId;
+      bookStore.nextId++;
+      nombreValido=!errorName(book.title);
+      autorValido=!errorName(book.authors);
+      book.year=stoi(ano);
+      anoValido=!errorDate(ano,book.year);
+      book.price=stof(precio);
+      if(book.price>0)
+        precioValido=true;
+      else
+        precioValido=false;
+      if(nombreValido && autorValido && anoValido && precioValido)
+        bookStore.books.push_back(book);
+      else if (!nombreValido)
+        error(ERR_BOOK_TITLE);
+        else if(!autorValido)
+          error(ERR_BOOK_AUTHORS);
+          else if(!anoValido)
+            error(ERR_BOOK_DATE);
+            else
+              error(ERR_BOOK_PRICE);
+      book.title="";
+      book.authors="";
       ano="";
-      slug="";
+      book.slug="";
       precio="";
     }
     fichero.close();
