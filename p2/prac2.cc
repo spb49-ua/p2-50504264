@@ -124,40 +124,19 @@ bool errorName(string palabra){
   return false;
 }
 
+
 string generarSlug(string titulo){
-  string slug="";
+  string slug;
+  bool ponerGuion=false;
   for(unsigned i=0;i<titulo.size();i++){
-    if(titulo[0]=='-'){
-      for(unsigned j=0;j<titulo.size();j++){
-        titulo[j]=titulo[j+1];
-        titulo[j+1]=' ';
+    if(isalnum(titulo[i])){
+      slug+=tolower(titulo[i]);
+      ponerGuion=true;
       }
+    else if (ponerGuion && isalnum(titulo[i+1])){
+      slug+='-';
+      ponerGuion=false;
     }
-    if(isalpha(titulo[i])!=0)
-      titulo[i]=tolower(titulo[i]);
-    else if(isalnum(titulo[i])==0){
-      titulo[i]='-';
-      }
-  }
-  
-  for(unsigned k=0;k<titulo.size();k++){
-    if(titulo[k]=='-' && titulo[k+1]=='-'){
-      for(unsigned l=k;l<titulo.size();l++){
-        titulo[l]=titulo[l+1];
-      }
-      k--;
-    }
-  }
-  
-  for(int m=titulo.size();m>=0;m--){
-    if(isalnum(titulo[m])!=0)
-      break;
-    else if(titulo[m]=='-')
-       titulo[m]=' ';
-  }
-  for(unsigned n=0;n<titulo.size();n++){
-    if(isalnum(titulo[n])!=0 || titulo[n]=='-')
-      slug+=titulo[n];
   }
   return slug;
 }
