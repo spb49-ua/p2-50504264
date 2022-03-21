@@ -343,6 +343,23 @@ void importFromCsv(BookStore &bookStore){
 }
 
 void exportToCsv(const BookStore &bookStore){
+  string filename;
+  pedir(FILENAME);
+  getline(cin,filename);
+  ofstream fichero;
+  fichero.open(filename);
+  if(!fichero.is_open())
+    error(ERR_FILE);
+  else{
+    for(unsigned int i=0;i<bookStore.nextId-1;i++){
+      if(bookStore.books[i].year!=0)
+      fichero<<'"'<<bookStore.books[i].title<<'"'<<','
+      <<'"'<<bookStore.books[i].authors<<'"'<<','
+      <<bookStore.books[i].year<<','
+      <<'"'<<bookStore.books[i].slug<<'"'<<','
+      <<bookStore.books[i].price<<endl;
+    }
+  }
 }
 
 void loadData(BookStore &bookStore){
