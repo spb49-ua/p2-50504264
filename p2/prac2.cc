@@ -29,7 +29,8 @@ enum Pedir {
   DATE,
   PRICE,
   ID,
-  FILENAME
+  FILENAME,
+  ERASED_DATA
 };
 
 struct Book {
@@ -109,6 +110,9 @@ void pedir(Pedir p) {
       break;
     case FILENAME:
       cout<<"Enter filename: ";
+      break;
+    case ERASED_DATA:
+      cout<<"All data will be erased, do you want to continue (Y/N)?: ";
       break;
   }
 }
@@ -363,6 +367,16 @@ void exportToCsv(const BookStore &bookStore){
 }
 
 void loadData(BookStore &bookStore){
+  char op;
+  string filename;
+  do{
+    pedir(ERASED_DATA);
+    cin>>op;
+  }while(op!='Y' && op!='y' && op!='N' && op!='n');
+  if(op=='Y' || op=='y'){
+    pedir(FILENAME);
+    getline(cin,filename);
+  }
 }
 
 void saveData(const BookStore &bookStore){
