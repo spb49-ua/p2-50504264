@@ -369,24 +369,51 @@ void exportToCsv(const BookStore &bookStore){
 void loadData(BookStore &bookStore){
   char op;
   string filename;
+  char a[500];
   do{
     pedir(ERASED_DATA);
     cin>>op;
+    cin.get();
   }while(op!='Y' && op!='y' && op!='N' && op!='n');
   if(op=='Y' || op=='y'){
     pedir(FILENAME);
     getline(cin,filename);
+    ifstream fichero;
+    fichero.open(filename, ios::in);
+    if(!fichero.is_open())
+      error(ERR_FILE);
+    else{
+      while (fichero.read((char *)&a, 50)){
+      // Mostramos el nombre y la nota de cada alumno
+      cout << a << endl;
+      }
+      fichero.close();
+    }
   }
 }
 
 void saveData(const BookStore &bookStore){
+/*  string filename;
+  pedir(FILENAME);
+  getline(cin,filename);
+  
+  ofstream fichero;
+  fichero.open(filename, ios::out);
+    
+  if(!fichero.is_open())
+    error(ERR_FILE);
+  else{    
+    fichero.write((const char *)&bookStore.name, sizeof(bookStore.name));
+    
+    fichero.close();
+  }*/
 }
 
 int main(int argc, char *argv[]) {
   BookStore bookStore;
   bookStore.name = "My Book Store";
   bookStore.nextId = 1;
-
+  
   char option;
   do {
     showMainMenu();
