@@ -269,7 +269,7 @@ void importExportMenu(BookStore &bookStore) {
        << "Option: ";
 }
 
-void importFromCsv(BookStore &bookStore){
+void importFromCsv(BookStore &bookStore,bool llamadaArgumento,string filenameArgumento){
   Book book;
   bool nombreValido,autorValido,anoValido,precioValido;
   string filename,linea;
@@ -366,34 +366,52 @@ void exportToCsv(const BookStore &bookStore){
   }
 }
 
-void loadData(BookStore &bookStore){
+void loadData(BookStore &bookStore,bool llamadaArgumento,string filenameArgumento){
   char op;
   string filename;
-  char a[500];
-  do{
-    pedir(ERASED_DATA);
-    cin>>op;
-    cin.get();
-  }while(op!='Y' && op!='y' && op!='N' && op!='n');
-  if(op=='Y' || op=='y'){
-    pedir(FILENAME);
-    getline(cin,filename);
-    ifstream fichero;
-    fichero.open(filename, ios::in);
-    if(!fichero.is_open())
-      error(ERR_FILE);
-    else{
-      while (fichero.read((char *)&a, 50)){
-      // Mostramos el nombre y la nota de cada alumno
-      cout << a << endl;
-      }
-      fichero.close();
+  BinBookStore binbookstore;
+  BinBook binbook;
+  Book book;
+  
+  if(!llamadaArgumento){
+    do{
+      pedir(ERASED_DATA);
+      cin>>op;
+      cin.get();
+    }while(op!='Y' && op!='y' && op!='N' && op!='n');
+    if(op=='Y' || op=='y'){
+      pedir(FILENAME);
+      getline(cin,filename);
     }
+  }
+  ifstream fichero;
+  if(!llamadaArgumento)
+    fichero.open(filename, ios::in);
+  else
+    fichero.open(filenameArgumento, ios::in);
+  if(!fichero.is_open())
+    error(ERR_FILE);
+  else{
+    fichero.read((char *)&binbookstore, sizeof(BinBookStore));
+    bookStore.books.clear();
+    bookStore.nextId=binbookstore.nextId;
+    while (fichero.read((char *)&binbook, sizeof(BinBook))){
+      book.id=binbook.id;
+      book.title=binbook.title;
+      book.authors=binbook.authors;
+      book.year=binbook.year;
+      book.slug=binbook.slug;
+      book.price=binbook.price;
+      bookStore.books.push_back(book);
+    }
+    fichero.close();
   }
 }
 
 void saveData(const BookStore &bookStore){
-/*  string filename;
+  BinBookStore binbookstore;
+  BinBook binbook;
+  string filename;
   pedir(FILENAME);
   getline(cin,filename);
   
@@ -402,69 +420,99 @@ void saveData(const BookStore &bookStore){
     
   if(!fichero.is_open())
     error(ERR_FILE);
-  else{    
-    fichero.write((const char *)&bookStore.name, sizeof(bookStore.name));
-    
+  else{
+    strncpy(binbookstore.name,bookStore.name.c_str(),KMAXSTRING-1);
+    binbookstore.nextId=bookStore.nextId;
+    fichero.write((char *)&binbookstore, sizeof(BinBookStore));
+    for(unsigned i=0;i<bookStore.nextId-1;i++){
+      binbook.id=bookStore.books[i].id;
+      strncpy(binbook.title,bookStore.books[i].title.c_str(),KMAXSTRING-1);
+      strncpy(binbook.authors,bookStore.books[i].authors.c_str(),KMAXSTRING-1);
+      binbook.year=bookStore.books[i].year;
+      strncpy(binbook.slug,bookStore.books[i].slug.c_str(),KMAXSTRING-1);
+      binbook.price=bookStore.books[i].price;
+      fichero.write((char *)&binbook, sizeof(BinBook));
+    }
     fichero.close();
-  }*/
+  }
 }
 
 int main(int argc, char *argv[]) {
   BookStore bookStore;
   bookStore.name = "My Book Store";
   bookStore.nextId = 1;
-  
   char option;
-  do {
-    showMainMenu();
-    cin >> option;
-    cin.get();
-
-    switch (option) {
-      case '1':
-        showCatalog(bookStore);
-        break;
-      case '2':
-        showExtendedCatalog(bookStore);
-        break;
-      case '3':
-        addBook(bookStore);
-        break;
-      case '4':
-        deleteBook(bookStore);
-        break;
-      case '5':
-        do{
-          importExportMenu(bookStore);
-          cin>>option;
-          cin.get();
-          switch (option) {
-            case '1':
-              importFromCsv(bookStore);
-              break;
-            case '2':
-              exportToCsv(bookStore);
-              break;
-            case '3':
-              loadData(bookStore);
-              break;
-            case '4':
-              saveData(bookStore);
-              break;
-            case 'b':
-              break;
-            default:
-              error(ERR_OPTION);
-          }
-        }while(option != 'b');
-        break;
-      case 'q':
-        break;
-      default:
-        error(ERR_OPTION);
+  vector<string> args;
+  bool errorArgumentos=false;
+  for(int i=0;i<argc-1;i++){
+    args.push_back(argv[i+1]);
+  }
+  for(unsigned int j=0;j<args.size();j+=2){
+    if (args[j]!="-i" && args[j]!="-l"){
+      error(ERR_ARGS);
+      errorArgumentos=true;
+      break;
     }
-  } while (option != 'q');
+  }
+  for(unsigned int k=0;k<args.size();k+=2){
+    if (args[k]!="-l"){
+      loadData(bookStore,true,args[k+1]);
+      args.erase(args.begin()+k);
+      args.erase(args.begin()+k+1);
+      k=0;
+    }
+  }
+  if(!errorArgumentos){
+    do {
+      showMainMenu();
+      cin >> option;
+      cin.get();
 
+      switch (option) {
+        case '1':
+          showCatalog(bookStore);
+          break;
+        case '2':
+          showExtendedCatalog(bookStore);
+          break;
+        case '3':
+          addBook(bookStore);
+          break;
+        case '4':
+          deleteBook(bookStore);
+          break;
+        case '5':
+          do{
+            importExportMenu(bookStore);
+            cin>>option;
+            cin.get();
+            switch (option) {
+              case '1':
+                importFromCsv(bookStore,false,"");
+                break;
+              case '2':
+                exportToCsv(bookStore);
+                break;
+              case '3':
+                loadData(bookStore,false,"");
+                break;
+              case '4':
+                saveData(bookStore);
+                break;
+              case 'b':
+                break;
+              default:
+                error(ERR_OPTION);
+            }
+          }while(option != 'b');
+          break;
+        case 'q':
+          break;
+        default:
+          error(ERR_OPTION);
+      }
+    } while (option != 'q');
+  }
   return 0;
 }
 
