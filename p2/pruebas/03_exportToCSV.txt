@@ -1,0 +1,27 @@
+3
+Cuentos infantiles
+Hans Christian Andersen
+1835
+30.99
+3
+La Divina comedia
+Dante Alighieri
+1534
+25.60
+3
+Orgullo y prejuicio
+Jane Austen
+1813
+18.90
+3
+Moby-Dick
+Herman Melville
+1851
+21.87
+5
+2
+salida-obtenida/fileExportToCSV.csv
+b
+2
+q
+

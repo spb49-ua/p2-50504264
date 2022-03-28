@@ -276,20 +276,26 @@ void importFromCsv(BookStore &bookStore,bool llamadaArgumento,string filenameArg
   unsigned int tam;
   string ano,precio;
   book.title="",book.authors="",book.year=0,book.slug="",book.price=0;
-  pedir(FILENAME);
-  getline(cin,filename);
   ifstream fichero;
+  filename=filenameArgumento;
+  if(!llamadaArgumento){
+    pedir(FILENAME);
+    getline(cin,filename);
+  }
   fichero.open(filename);
+  
   if(!fichero.is_open())
     error(ERR_FILE);
   else{
     fichero.close();
+    
     tam=tamanoFichero(filename);
-    ifstream fichero(filename);
+    fichero.open(filename);
+    
     for(unsigned j=0;j<tam;j++){
       getline(fichero,linea);
       int comillas=0;
-      for(unsigned k=0;k<linea.length();k++){       
+      for(unsigned k=0;k<linea.length();k++){
         if(linea[k]=='"')
           comillas++;
         switch(comillas){
@@ -444,6 +450,8 @@ int main(int argc, char *argv[]) {
   char option;
   vector<string> args;
   bool errorArgumentos=false;
+  int iArgumentos=0;
+  int lArgumentos=0;
   for(int i=0;i<argc-1;i++){
     args.push_back(argv[i+1]);
   }
@@ -453,16 +461,31 @@ int main(int argc, char *argv[]) {
       errorArgumentos=true;
       break;
     }
-  }
-  for(unsigned int k=0;k<args.size();k+=2){
-    if (args[k]!="-l"){
-      loadData(bookStore,true,args[k+1]);
-      args.erase(args.begin()+k);
-      args.erase(args.begin()+k+1);
-      k=0;
+    if(args[j]=="-i")
+      iArgumentos++;
+    if(args[j]=="-l")
+      lArgumentos++;
+    if(iArgumentos==2 || lArgumentos==2){
+      error(ERR_ARGS);
+      errorArgumentos=true;
+      break;
     }
+    
   }
   if(!errorArgumentos){
+    for(unsigned int k=0;k<args.size();k+=2){
+      if (args[k]=="-l"&&k+1<args.size())
+        loadData(bookStore,true,args[k+1]);
+      else if(args[k]=="-i"&&k+1<args.size()){
+             importFromCsv(bookStore,true,args[k+1]);
+           }
+           else{
+             error(ERR_ARGS);
+             errorArgumentos=true;
+           }
+    }
+  }
+   if(!errorArgumentos){
     do {
       showMainMenu();
       cin >> option;

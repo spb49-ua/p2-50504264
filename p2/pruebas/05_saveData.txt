@@ -1,0 +1,27 @@
+3
+Cuentos infantiles
+Hans Christian Andersen
+1835
+30.99
+3
+La Divina comedia
+Dante Alighieri
+1534
+70.60
+3
+Orgullo y prejuicio
+Jane Austen
+1813
+34.70
+3
+El coronel no tiene quien le escriba
+Gabriel Garcia Marquez
+1961
+13.95
+5
+4
+salida-obtenida/fileSaveData.bin
+b
+1
+2
+q
