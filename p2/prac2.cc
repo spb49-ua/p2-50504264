@@ -225,9 +225,9 @@ void addBook(BookStore &bookStore) {
     if(priceS.size()!=0)
       libro.price=stof(priceS);
       
-    if (priceS.size()==0 || libro.price<0)
+    if (priceS.size()==0 || libro.price<=0)
       error(ERR_BOOK_PRICE);
-  }while(priceS.size()==0 || libro.price<0);
+  }while(priceS.size()==0 || libro.price<=0);
   
   libro.slug=generarSlug(libro.title);
   
