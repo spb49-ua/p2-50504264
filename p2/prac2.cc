@@ -373,7 +373,7 @@ void exportToCsv(const BookStore &bookStore){
 }
 
 void loadData(BookStore &bookStore,bool llamadaArgumento,string filenameArgumento){
-  char op;
+  string op;
   string filename;
   BinBookStore binbookstore;
   BinBook binbook;
@@ -382,35 +382,35 @@ void loadData(BookStore &bookStore,bool llamadaArgumento,string filenameArgument
   if(!llamadaArgumento){
     do{
       pedir(ERASED_DATA);
-      cin>>op;
-      cin.get();
-    }while(op!='Y' && op!='y' && op!='N' && op!='n');
-    if(op=='Y' || op=='y'){
+      getline(cin,op);
+    }while((op!="Y" && op!="y" && op!="N" && op!="n")||op.size()==0);
+    if(op=="Y" || op=="y"){
       pedir(FILENAME);
       getline(cin,filename);
     }
   }
-  ifstream fichero;
-  if(!llamadaArgumento)
-    fichero.open(filename, ios::in);
   else
-    fichero.open(filenameArgumento, ios::in);
-  if(!fichero.is_open())
-    error(ERR_FILE);
-  else{
-    fichero.read((char *)&binbookstore, sizeof(BinBookStore));
-    bookStore.books.clear();
-    bookStore.nextId=binbookstore.nextId;
-    while (fichero.read((char *)&binbook, sizeof(BinBook))){
-      book.id=binbook.id;
-      book.title=binbook.title;
-      book.authors=binbook.authors;
-      book.year=binbook.year;
-      book.slug=binbook.slug;
-      book.price=binbook.price;
-      bookStore.books.push_back(book);
+    filename=filenameArgumento;
+  if(llamadaArgumento || op=="y" || op=="Y"){
+    ifstream fichero;
+    fichero.open(filename, ios::in);
+    if(!fichero.is_open())
+      error(ERR_FILE);
+    else{
+      fichero.read((char *)&binbookstore, sizeof(BinBookStore));
+      bookStore.books.clear();
+      bookStore.nextId=binbookstore.nextId;
+      while (fichero.read((char *)&binbook, sizeof(BinBook))){
+        book.id=binbook.id;
+        book.title=binbook.title;
+        book.authors=binbook.authors;
+        book.year=binbook.year;
+        book.slug=binbook.slug;
+        book.price=binbook.price;
+        bookStore.books.push_back(book);
+      }
+      fichero.close();
     }
-    fichero.close();
   }
 }
 
