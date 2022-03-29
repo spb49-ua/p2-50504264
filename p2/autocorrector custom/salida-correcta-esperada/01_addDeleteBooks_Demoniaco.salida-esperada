@@ -1,0 +1,144 @@
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: ERROR: wrong book id
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: ERROR: wrong book id
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book title: 
+ERROR: wrong book title
+Enter book title: ERROR: wrong book title
+Enter book title: ERROR: wrong book title
+Enter book title: Enter author(s): 
+ERROR: wrong author(s)
+Enter author(s): ERROR: wrong author(s)
+Enter author(s): ERROR: wrong author(s)
+Enter author(s): ERROR: wrong author(s)
+Enter author(s): Enter publication year: ERROR: wrong date
+Enter publication year: ERROR: wrong date
+Enter publication year: Enter price: ERROR: wrong price
+Enter price: ERROR: wrong price
+Enter price: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book title: Enter author(s): Enter publication year: Enter price: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book title: Enter author(s): Enter publication year: Enter price: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: 1. Cuent52os inf--anti,les: (1440), 52.5
+2. La Divina comedia (2022), 70.6
+3. Orgullo y prejuicio (1813), 34.7
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: "Cuent52os inf--anti,les:","Hans Christi87an- An--,dersen",1440,"cuent52os-inf-anti-les",52.5
+"La Divina comedia","Dante Alighieri",2022,"la-divina-comedia",70.6
+"Orgullo y prejuicio","Jane Austen",1813,"orgullo-y-prejuicio",34.7
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book title: Enter author(s): Enter publication year: Enter price: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: ERROR: wrong book id
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: Enter book id: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: 1. Cuent52os inf--anti,les: (1440), 52.5
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: "Cuent52os inf--anti,les:","Hans Christi87an- An--,dersen",1440,"cuent52os-inf-anti-les",52.5
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: 

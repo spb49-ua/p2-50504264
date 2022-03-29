@@ -176,7 +176,7 @@ void showMainMenu() {
 
 void showCatalog(const BookStore &bookStore) {
   for(unsigned i=0;i<bookStore.nextId-1;i++){
-    if(bookStore.books[i].year!=0)
+    if(bookStore.books[i].price!=0)
       cout<<bookStore.books[i].id<<". "<<bookStore.books[i].title<<" ("<<bookStore.books[i].year<<"), "<<bookStore.books[i].price<<endl;
   }
 }
@@ -321,8 +321,10 @@ void importFromCsv(BookStore &bookStore,bool llamadaArgumento,string filenameArg
             break;
         }  
       }
-      book.id=bookStore.nextId;
-      bookStore.nextId++;
+      nombreValido=false;
+      autorValido=false;
+      anoValido=false;
+      precioValido=false;
       nombreValido=!errorName(book.title);
       autorValido=!errorName(book.authors);
       book.year=stoi(ano);
@@ -332,8 +334,11 @@ void importFromCsv(BookStore &bookStore,bool llamadaArgumento,string filenameArg
         precioValido=true;
       else
         precioValido=false;
-      if(nombreValido && autorValido && anoValido && precioValido)
+      if(nombreValido && autorValido && anoValido && precioValido){
+        book.id=bookStore.nextId;
+        bookStore.nextId++;
         bookStore.books.push_back(book);
+      }
       else if (!nombreValido)
         error(ERR_BOOK_TITLE);
         else if(!autorValido)

@@ -1,0 +1,40 @@
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: [Import/export options]
+1- Import from CSV
+2- Export to CSV
+3- Load data
+4- Save data
+b- Back to main menu
+Option: Enter filename: ERROR: wrong book title
+ERROR: wrong book title
+ERROR: wrong author(s)
+ERROR: wrong date
+ERROR: wrong price
+[Import/export options]
+1- Import from CSV
+2- Export to CSV
+3- Load data
+4- Save data
+b- Back to main menu
+Option: [Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: 1. libro normal (1969), 4.2
+[Options]
+1- Show catalog
+2- Show extended catalog
+3- Add book
+4- Delete book
+5- Import/export
+q- Quit
+Option: 
