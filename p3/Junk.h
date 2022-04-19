@@ -15,11 +15,11 @@ class Junk{
     int quantity;
   public:
     Junk();
-    Junk(JunkType type; int quantity);
+    Junk(JunkType type, int quantity);
     JunkType getType() const;
     int getQuantity() const;
     char getTypeChar() const;
     int getValue() const;
-}
+};
 
 #endif

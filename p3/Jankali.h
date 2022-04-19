@@ -2,6 +2,7 @@
 #define _JANKALI_H_
 
 #include <iostream>
+#include <vector>
 #include "Coordinate.h"
 #include "Util.h"
 
@@ -23,6 +24,6 @@ class Jankali{
     void spoil();
     void spoil(JunkType type);
     void spoil(int pos);
-}
+};
 
 #endif

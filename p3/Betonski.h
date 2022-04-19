@@ -5,6 +5,7 @@
 #include "Util.h"
 #include "Coordinate.h"
 #include "Junk.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -30,6 +31,6 @@ class Betonski{
     int spoliation(JunkType type);
     int extract(Map &map);
     bool move(const Map &map);
-}
+};
 
 #endif
