@@ -2,6 +2,7 @@
 #define _BETONSKI_H_
 
 #include <iostream>
+#include <vector>
 #include "Util.h"
 #include "Coordinate.h"
 #include "Junk.h"
@@ -17,6 +18,8 @@ class Betonski{
     string name;
     int anger;
     bool captured;
+    vector<Junk>bag;
+    Coordinate position;
   public:
     Betonski(string name);
     string getName() const;

@@ -53,5 +53,37 @@ Junk Map::collectJunk(const Coordinate &coord){
 }
 
 ostream& operator<<(ostream &os,const Map &map){
-  
+  for(int k=0;k<=rows+1;k++){
+      for(int l=0;l<=columns;l++){
+        if(l==0 && k==0) os<<"   ";
+        else if(l==0){
+          if(k-1>=10)
+            os<<k-1<<" ";
+          else
+            os<<'0'<<k-1<<" ";
+        }
+        if(k==0){
+          if(l>=10)
+            os<<l<<" ";
+          else
+            os<<'0'<<l<<" ";
+        }
+        else{
+          switch(junks[coord.getRow()][coord.getColumn()]){
+            case WASTELAND: os<<"W ";
+              break;
+            case GOLD: os<<"G ";
+              break;
+            case METAL: os<<"M ";
+              break;
+            case FOOD: os<<"F ";
+              break;
+            case STONE: os<<"S ";
+              break;
+          }
+        }
+      }
+      os<<endl;
+    }
+  return os;
 }

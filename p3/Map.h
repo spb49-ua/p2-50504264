@@ -2,6 +2,7 @@
 #define _MAP_H_
 
 #include <iostream>
+#include <vector>
 #include "Coordinate.h"
 #include "Junk.h"
 
@@ -14,7 +15,7 @@ class Map{
   protected:
     int rows;
     int columns;
-    vector<vector<Junk>> junks;
+    vector<vector<Junk>>junks;
   public:
     Map(int rows, int columns);
     bool isInside(const Coordinate &coord) const;
