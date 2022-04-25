@@ -21,7 +21,7 @@ Junk::Junk(JunkType type, int quantity){
     throw EXCEPTION_QUANTITY;
 }
 
-Junk::JunkType getType() const{
+JunkType Junk::getType() const{
   return type;
 }
 
@@ -54,6 +54,7 @@ int Junk::getValue() const{
     case FOOD: return FOOD_VALUE*quantity;
     case STONE: return STONE_VALUE*quantity;
   }
+  return 0;
 }
 
 ostream& operator<<(ostream &os,const Junk &junk){

@@ -8,10 +8,10 @@ using namespace std;
 Map::Map(int rows, int columns){
   
   if(rows>=5 && columns>=5){
-    for(unsigned i=0;i<rows;i++){
+    for(int i=0;i<rows;i++){
       Junk junk;
       vector<Junk> junkVector;
-      for(unsigned j=0;j<columns;j++)
+      for(int j=0;j<columns;j++)
        junkVector.push_back(junk);
       junks.push_back(junkVector);
     }
@@ -21,7 +21,7 @@ Map::Map(int rows, int columns){
 }
 
 bool Map::isInside(const Coordinate &coord) const{
-  if(coord.columns>0 && coord.rows>0 && coord.columns<=columns && coord.rows<=rows)
+  if(coord.getColumn()>0 && coord.getRow()>0 && coord.getColumn()<=columns && coord.getRow()<=rows)
     return true;
   else
     return false;
@@ -45,7 +45,7 @@ Junk Map::collectJunk(const Coordinate &coord){
   if(isInside(coord)){
     Junk aux;
     aux=junks[coord.getRow()][coord.getColumn()];
-    junks[coord.getRow()][coord.getColumn()]=junk;
+    junks[coord.getRow()][coord.getColumn()]=Junk();
     return aux;
   }
   else
@@ -53,8 +53,9 @@ Junk Map::collectJunk(const Coordinate &coord){
 }
 
 ostream& operator<<(ostream &os,const Map &map){
-  for(int k=0;k<=rows+1;k++){
-      for(int l=0;l<=columns;l++){
+  Coordinate coord;
+  for(int k=0;k<=map.rows+1;k++){
+      for(int l=0;l<=map.columns;l++){
         if(l==0 && k==0) os<<"   ";
         else if(l==0){
           if(k-1>=10)
@@ -68,8 +69,8 @@ ostream& operator<<(ostream &os,const Map &map){
           else
             os<<'0'<<l<<" ";
         }
-        else{
-          switch(junks[coord.getRow()][coord.getColumn()]){
+        else{/*
+          switch(map.junks[coord.getRow()][coord.getColumn()]){
             case WASTELAND: os<<"W ";
               break;
             case GOLD: os<<"G ";
@@ -80,7 +81,8 @@ ostream& operator<<(ostream &os,const Map &map){
               break;
             case STONE: os<<"S ";
               break;
-          }
+          }*/
+          os<<map.junks[coord.getRow()][coord.getColumn()].getTypeChar()<<' ';
         }
       }
       os<<endl;

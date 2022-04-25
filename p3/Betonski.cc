@@ -20,8 +20,8 @@ Betonski::Betonski(string name){
     this->name=name;
     captured=false;
     anger=0;
-    setRow(-1);
-    setColumn(-1);
+    position.setRow(-1);
+    position.setColumn(-1);
   }
 }
 
@@ -49,17 +49,17 @@ void Betonski::setPosition(const Coordinate &coord){
 
 int Betonski::calculateValue() const{
   int total=0;
-  for(int i=0;i<bags.size();i++){
-    switch(bags[i].getType()) {
-      case WASTELAND: total+=WASTELAND_VALUE*bags[i].getQuantity();
+  for(unsigned int i=0;i<bag.size();i++){
+    switch(bag[i].getType()) {
+      case WASTELAND: total+=WASTELAND_VALUE*bag[i].getQuantity();
           break;
-      case GOLD: total+=GOLD_VALUE*bags[i].getQuantity();
+      case GOLD: total+=GOLD_VALUE*bag[i].getQuantity();
           break;
-      case METAL: total+=METAL_VALUE*bags[i].getQuantity();
+      case METAL: total+=METAL_VALUE*bag[i].getQuantity();
           break;
-      case FOOD: total+=FOOD_VALUE*bags[i].getQuantity();
+      case FOOD: total+=FOOD_VALUE*bag[i].getQuantity();
           break;
-      case STONE: total+=STONE_VALUE*bags[i].getQuantity();
+      case STONE: total+=STONE_VALUE*bag[i].getQuantity();
           break;
     }
   }
@@ -68,18 +68,18 @@ int Betonski::calculateValue() const{
 
 int Betonski::calculateValue(JunkType type) const{
   int total=0;
-  for(int i=0;i<bags.size();i++){
-    if(bags[i].getType()==type){
+  for(unsigned int i=0;i<bag.size();i++){
+    if(bag[i].getType()==type){
       switch(type) {
-        case WASTELAND: total+=WASTELAND_VALUE*bags[i].getQuantity();
+        case WASTELAND: total+=WASTELAND_VALUE*bag[i].getQuantity();
           break;
-        case GOLD: total+=GOLD_VALUE*bags[i].getQuantity();
+        case GOLD: total+=GOLD_VALUE*bag[i].getQuantity();
           break;
-        case METAL: total+=METAL_VALUE*bags[i].getQuantity();
+        case METAL: total+=METAL_VALUE*bag[i].getQuantity();
           break;
-        case FOOD: total+=FOOD_VALUE*bags[i].getQuantity();
+        case FOOD: total+=FOOD_VALUE*bag[i].getQuantity();
           break;
-        case STONE: total+=STONE_VALUE*bags[i].getQuantity();
+        case STONE: total+=STONE_VALUE*bag[i].getQuantity();
           break;
       }
     }
@@ -98,7 +98,7 @@ int Betonski::spoliation(){
   }
   else{
     totalValue=calculateValue();
-    bags.clear();
+    bag.clear();
     anger+=totalValue;
     return totalValue;
   }
@@ -115,7 +115,7 @@ int Betonski::spoliation(JunkType type){
   }
   else{
     totalValue=calculateValue(type);
-    bags.clear();
+    bag.clear();
     anger+=totalValue;
     return totalValue;
   }
@@ -126,25 +126,26 @@ int Betonski::extract(Map &map){
   if(map.isInside(position)){
     switch(map.getJunk(position).getType()){
       case WASTELAND: return WASTELAND_VALUE;
-      case GOLD:  Junk junk(GOLD,junk.getQuantity());
+      case GOLD:  Junk(GOLD,junk.getQuantity());
                   bag.push_back(junk);
                   return GOLD_VALUE;
-      case METAL: Junk junk(GOLD,junk.getQuantity());
+      case METAL: Junk(GOLD,junk.getQuantity());
                   bag.push_back(junk);
                   return METAL_VALUE;
-      case FOOD:  Junk junk(GOLD,junk.getQuantity());
+      case FOOD:  Junk(GOLD,junk.getQuantity());
                   bag.push_back(junk);
                   return FOOD_VALUE;
-      case STONE: Junk junk(GOLD,junk.getQuantity());
+      case STONE: Junk(GOLD,junk.getQuantity());
                   bag.push_back(junk);
                   return STONE_VALUE;
     }
   }
   else 
-    return 0;
+    return WASTELAND_VALUE;
+  return WASTELAND_VALUE;
 }
 
-bool move(const Map &map){
+bool Betonski::move(const Map &map){
   Util util;
   Coordinate tryPosition;
   if(map.isInside(position)){
@@ -230,6 +231,7 @@ bool move(const Map &map){
     throw EXCEPTION_OUTSIDE;
     return false;
   }
+  return false;
 }
 
 ostream& operator<<(ostream &os,const Betonski &betonski){
@@ -240,9 +242,12 @@ ostream& operator<<(ostream &os,const Betonski &betonski){
     os<<"Free ";
   os<<betonski.getAnger()<<" ["<<betonski.getPosition().getRow()<<','<<betonski.getPosition().getColumn()<<']'<<endl;
   if(betonski.bag.size()!=0){
-    for(int i=0;i<betonski.bag.size();i++){
+    for(unsigned int i=0;i<betonski.bag.size();i++){
       os<<'[';
       switch(betonski.bag[i].getType()){
+        case WASTELAND://el compilador da error si no lo pongo
+          os<<"WASTELAND";
+          break;
         case GOLD:  os<<"GOLD";
           break;
         case METAL: os<<"METAL";

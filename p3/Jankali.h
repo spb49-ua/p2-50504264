@@ -15,6 +15,8 @@ class Jankali{
   protected:
     string name;
     int power;
+    vector<Betonski*>subdued;
+    vector<Coordinate>traps;
   public:
     Jankali(string name);
     string getName() const;

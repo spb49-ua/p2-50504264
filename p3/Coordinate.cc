@@ -29,10 +29,11 @@ void Coordinate::setColumn(int column){
 }
 
 bool Coordinate::compare(const Coordinate &coord) const{
-  if(this->coord.row==coord.row && this->coord.column=coord.column)
+  if(row==coord.row && column==coord.column)
     return true;
   else
     return false;
+  return false;
 }
 
 ostream& operator<<(ostream &os,const Coordinate &coord){
