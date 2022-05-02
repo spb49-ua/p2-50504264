@@ -123,22 +123,22 @@ int Betonski::spoliation(JunkType type){
 }
 
 int Betonski::extract(Map &map){
-  //Junk junk;
+  Junk junk;
   if(map.isInside(position)){
     switch(map.getJunk(position).getType()){
       case WASTELAND: return WASTELAND_VALUE;
-      case GOLD:  //Junk(GOLD,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return GOLD_VALUE*map.getJunk(position).getQuantity();
-      case METAL: //Junk(METAL,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return METAL_VALUE*map.getJunk(position).getQuantity();
-      case FOOD:  //Junk(FOOD,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return FOOD_VALUE*map.getJunk(position).getQuantity();
-      case STONE: //Junk(STONE,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return STONE_VALUE*map.getJunk(position).getQuantity();
+      case GOLD:  Junk(GOLD,junk.getQuantity());
+                  bag.push_back(junk);
+                  return GOLD_VALUE;
+      case METAL: Junk(METAL,junk.getQuantity());
+                  bag.push_back(junk);
+                  return METAL_VALUE;
+      case FOOD:  Junk(FOOD,junk.getQuantity());
+                  bag.push_back(junk);
+                  return FOOD_VALUE;
+      case STONE: Junk(STONE,junk.getQuantity());
+                  bag.push_back(junk);
+                  return STONE_VALUE;
     }
   }
   else 
