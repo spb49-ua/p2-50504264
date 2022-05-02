@@ -6,12 +6,13 @@
 using namespace std;
 
 Map::Map(int rows, int columns){
-  
+  this->rows=rows;
+  this->columns=columns;
   if(rows>=5 && columns>=5){
     for(int i=0;i<rows;i++){
       Junk junk;
       vector<Junk> junkVector;
-      for(int j=0;j<columns;j++)
+      for(int j=0;j<=columns;j++)
        junkVector.push_back(junk);
       junks.push_back(junkVector);
     }
@@ -21,7 +22,7 @@ Map::Map(int rows, int columns){
 }
 
 bool Map::isInside(const Coordinate &coord) const{
-  if(coord.getColumn()>0 && coord.getRow()>0 && coord.getColumn()<=columns && coord.getRow()<=rows)
+  if(coord.getColumn()>=0 && coord.getRow()>=0 && coord.getColumn()<columns && coord.getRow()<rows)
     return true;
   else
     return false;
@@ -54,8 +55,8 @@ Junk Map::collectJunk(const Coordinate &coord){
 
 ostream& operator<<(ostream &os,const Map &map){
   Coordinate coord;
-  for(int k=0;k<=map.rows+1;k++){
-      for(int l=0;l<=map.columns;l++){
+  for(int k=0;k<=map.rows;k++){
+      for(int l=0;l<map.columns;l++){
         if(l==0 && k==0) os<<"   ";
         else if(l==0){
           if(k-1>=10)
@@ -82,10 +83,14 @@ ostream& operator<<(ostream &os,const Map &map){
             case STONE: os<<"S ";
               break;
           }*/
-          os<<map.junks[coord.getRow()][coord.getColumn()].getTypeChar()<<' ';
+          //os<<map.junks[coord.getRow()][coord.getColumn()].getTypeChar()<<' ';
+          if(map.junks[k-1][l].getTypeChar()=='W')
+            os<<"  ";
+          else
+            os<<map.junks[k-1][l].getTypeChar()<<"  ";
         }
       }
       os<<endl;
-    }
+  }
   return os;
 }
