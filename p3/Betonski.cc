@@ -117,8 +117,10 @@ int Betonski::spoliation(JunkType type){
   else{
     totalValue=calculateValue(type);
     for(unsigned int i=0;i<bag.size();i++){
-      if(bag[i].getType()==type)
+      if(bag[i].getType()==type){
         bag.erase(bag.begin()+i);
+        i--;
+      }
     }
     anger+=totalValue;
     return totalValue;
