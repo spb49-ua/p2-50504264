@@ -94,3 +94,10 @@ ostream& operator<<(ostream &os,const Map &map){
   }
   return os;
 }
+
+/*int main(){
+  Map map(5,5);
+  cout<<map<<endl;
+  cout<<map.getJunk({4,1})<<endl;
+}
+*/

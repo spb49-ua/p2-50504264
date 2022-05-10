@@ -116,29 +116,42 @@ int Betonski::spoliation(JunkType type){
   }
   else{
     totalValue=calculateValue(type);
-    bag.clear();
+    for(unsigned int i=0;i<bag.size();i++){
+      if(bag[i].getType()==type)
+        bag.erase(bag.begin()+i);
+    }
     anger+=totalValue;
     return totalValue;
   }
 }
 
 int Betonski::extract(Map &map){
-  //Junk junk;
+  Junk junk(WASTELAND,0);
+  Junk junkW(WASTELAND,0);
   if(map.isInside(position)){
     switch(map.getJunk(position).getType()){
       case WASTELAND: return WASTELAND_VALUE;
       case GOLD:  //Junk(GOLD,junk.getQuantity());
-                  bag.push_back(/*junk*/map.getJunk(position));
-                  return GOLD_VALUE*map.getJunk(position).getQuantity();
+                  junk=map.getJunk(position);
+                  map.putJunk(junkW,position);
+                  bag.push_back(/*junk*/junk);
+                  
+                  return GOLD_VALUE*junk.getQuantity();
       case METAL: //Junk(METAL,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return METAL_VALUE*map.getJunk(position).getQuantity();
+                  junk=map.getJunk(position);
+                  map.putJunk(junkW,position);
+                  bag.push_back(/*junk*/junk);
+                  return METAL_VALUE*junk.getQuantity();
       case FOOD:  //Junk(FOOD,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return FOOD_VALUE*map.getJunk(position).getQuantity();
+                  junk=map.getJunk(position);
+                  map.putJunk(junkW,position);
+                  bag.push_back(/*junk*/junk);
+                  return FOOD_VALUE*junk.getQuantity();
       case STONE: //Junk(STONE,junk.getQuantity());
-                  bag.push_back(map.getJunk(position));
-                  return STONE_VALUE*map.getJunk(position).getQuantity();
+                  junk=map.getJunk(position);
+                  map.putJunk(junkW,position);
+                  bag.push_back(/*junk*/junk);
+                  return STONE_VALUE*junk.getQuantity();
     }
   }
   else 
@@ -260,9 +273,10 @@ ostream& operator<<(ostream &os,const Betonski &betonski){
       }
       os<<':'<<betonski.bag[i].getQuantity()<<']';
     }
+   os<<'\n';
   }
-  else
-    cout<<endl;
+ else
+    os<<endl;
   return os;
 }
 
