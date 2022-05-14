@@ -85,7 +85,7 @@ ostream& operator<<(ostream &os,const Map &map){
           }*/
           //os<<map.junks[coord.getRow()][coord.getColumn()].getTypeChar()<<' ';
           if(map.junks[k-1][l].getTypeChar()=='W')
-            os<<"  ";
+            os<<"   ";
           else
             os<<map.junks[k-1][l].getTypeChar()<<"  ";
         }

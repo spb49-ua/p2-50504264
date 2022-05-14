@@ -119,5 +119,6 @@ ostream& operator<<(ostream &os,const Jankali &jankali){
   for(unsigned int j=0;j<jankali.traps.size();j++){
     os<<'['<<jankali.traps[j].getRow()<<','<<jankali.traps[j].getColumn()<<']';
   }
+  os<<endl;
   return os;
 }
